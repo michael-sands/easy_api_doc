@@ -11,22 +11,38 @@ module EasyApiDoc
     end
 
     def namespace
+      if @namespace == nil
+        flash[:error] = "No namespace found"
+        redirect_to root_path
+        return
+      end
       @resources = @namespace.resources
     end
 
     def resource
       @resource = @namespace.resources.find {|r| r.name == params[:resource] }
-      if @resource.nil?
-        raise "no resource #{params[:resource]}"
+      unless @resource
+        flash[:error] = "No resource found #{params[:resource]}"
+        redirect_to root_path
+        return
       end
       @actions = @resource.actions
     end
 
     def api_action
       @resource = @namespace.resources.find {|r| r.name == params[:resource] }
+      unless @resource
+        flash[:error] = "No resource #{params[:resource]} found"
+        redirect_to root_path
+        return
+      end
       @action = @resource.actions.find {|a| a.name == params[:api_action] }
-
-      create_auth_params unless !@action.authentication
+      unless @resource
+        flash[:error] = "No action #{params[:api_action]} found"
+        redirect_to root_path
+        return
+      end
+      create_auth_params if @action.authentication
     end
 
     private
