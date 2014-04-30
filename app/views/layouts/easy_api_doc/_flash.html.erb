@@ -1,0 +1,16 @@
+<% if flash && (flash[:notice] || flash[:error]) %>
+  <div class="flash">
+  <% if flash[:notice] %>
+    <div id="flash_notice" class="successmessage flashmessage">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+      Notice: <%=raw flash[:notice] %>
+    </div>
+    <% end %>
+  <% if flash[:error] %>
+    <div id="flash_error" class="warningmessage flashmessage">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+      Error: <%=raw flash[:error] %>
+    </div>
+  <% end %>
+  </div>
+<% end %>
